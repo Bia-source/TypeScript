@@ -1,6 +1,6 @@
 interface Course{
     name: String;
-    duration: number;
+    duration?: number;
     educator: String;
 }
 class CreateCourseService {
