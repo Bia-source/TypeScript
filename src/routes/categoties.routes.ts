@@ -8,7 +8,11 @@ categoriesRoutes.post("/", (request, response)=>{
     const { name, description } = request.body;
     categoriesController.create({name, description});
     return response.status(200).json();
+});
 
+categoriesRoutes.get("/", (request, response)=>{
+    const listCategories = categoriesController.getList();
+    return response.status(200).json({ listCategories });
 })
 
 export { categoriesRoutes };

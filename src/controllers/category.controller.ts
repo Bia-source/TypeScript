@@ -28,6 +28,10 @@ class CategoryController {
     
     this.categories.push(createdCategory);
    }
+
+   getList(): Category[]{
+      return this.categories;
+   }
 }
 
 export { CategoryController };
