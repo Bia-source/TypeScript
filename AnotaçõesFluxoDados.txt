@@ -13,3 +13,25 @@ e o por passar o Repositório como parâmetro na instância do Service.
 
 Meu Server terá acesso ao Route utilizando a linha 
 app.use(“/”, exemploRoute);
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+[] - Criar a Model que é o modelo da classe principal, que dá origem ao objeto principal.
+
+[] - Criar o Repositório e o DTO do objeto principal para manusear dentro do Repositório.
+   - Criar as funções de inserção/busca/update/deleção dentro do Repositório 
+
+[] - Criar o Service e chamar as funções do Repositório.
+
+[] - Criar a Rota que chamará a função execute() do Service e passará para ele como parametro o Repositório e o request.
+
+[] - Chamar a rota.
+
+-------------------------------------------
+
+RESPONSABILIDADES
+
+Route - Receber a Requisição (Request), chamar o serviço (Service) e passar a Requisição.
+Model - Classe que cria um modelo de objeto.
+Service - Faz toda regra de negócio.
+Repository - Armazena as funções que manuseiam o objeto.
