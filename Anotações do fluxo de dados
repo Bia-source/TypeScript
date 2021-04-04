@@ -1,0 +1,15 @@
+Meu Service terá acesso ao Repositório pelo construtor (this.exemploRepository), chamando suas funções de inserção/busca/update/deleção do Repositório. 
+Em seu construtor recebe como parâmetro o Repositório que irá acessar.
+
+Meu Repositório irá manusear o DTO do objeto, iniciando instanciando um objeto dentro de sua classe, neste Repositório será criado as funções de 
+inserção, busca(filtrada ou não), deleção e update do objeto dentro do banco. Suas funções é necessário especificar o tipo de retorno. 
+
+Meu Model é a classe principal que dá origem ao objeto principal (interface do objeto).
+
+————————————————————————-----------------------------------------------------------------------------------------------------------------------------
+
+Meu Route terá acesso ao Service, chamando sua função execute() . Responsável por passar os parâmetros passados pelo request para a função execute() 
+e o por passar o Repositório como parâmetro na instância do Service.
+
+Meu Server terá acesso ao Route utilizando a linha 
+app.use(“/”, exemploRoute);
