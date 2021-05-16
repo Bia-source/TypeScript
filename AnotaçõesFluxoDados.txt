@@ -25,7 +25,7 @@ app.use(“/”, exemploRoute);
 
 [] - Criar a Rota que chamará a função execute() do Service e passará para ele como parametro o Repositório e o request.
 
-[] - Chamar a rota.
+[] - Chamar a rota no server.
 
 -------------------------------------------
 

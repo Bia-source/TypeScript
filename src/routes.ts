@@ -1,5 +1,5 @@
 import { Request, Response} from 'express';
-import CreateCourseService from './services/createCourseService';
+import CreateCourseService from './modules/cars/services/createCourseService';
 
 export function createCourse(request: Request, response: Response){
     const course = request.body;
