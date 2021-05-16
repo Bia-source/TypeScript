@@ -1,10 +1,7 @@
 import { Category } from "../model/category.model";
+import { ICategoriesRepository, ICreateCategoryDTO } from "./ICategoriesRepository";
 
 //DTO => Data transfer object 
-interface ICreateCategoryDTO{
-    name: string;
-    description: string;
-}
 class CategoryRepositories {
    private categories: Category[] = [];
 
@@ -29,7 +26,7 @@ class CategoryRepositories {
     this.categories.push(createdCategory);
    }
 
-   getList(): Category[]{
+   list(): Category[]{
       return this.categories;
    }
 
