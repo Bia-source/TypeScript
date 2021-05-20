@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 function connection(){
 
     try {
-        mongoose.connect('mongodb+srv://admin:admin@backend.azxej.mongodb.net/<dbname>?retryWrites=true&w=majority', {
+        mongoose.connect('mongodb+srv://admin:<password>@login.goss8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
             useNewUrlParser: true,
             useUnifiedTopology: true  
            }, ()=>{
