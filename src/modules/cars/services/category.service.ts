@@ -1,5 +1,6 @@
 import { CategoryRepositories } from '../repositories/category.repository';
 import { ICategoriesRepository } from '../interfaces/ICategoriesRepository';
+import { Category } from '../model/category.model';
 
 interface IRequest {
     name: string;
@@ -18,6 +19,11 @@ class CategoryService {
     }
 
     this.categoriesRepository.create({name, description});
+  }
+
+  findByName(name:string): Category{
+    const specification = this.categoriesRepository.findByName(name);
+    return specification;
   }
 }
 

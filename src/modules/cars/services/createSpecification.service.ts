@@ -7,7 +7,7 @@ interface IRequest {
     description: string;
 }
 
-class createSpecificationService {
+class CreateSpecificationService {
    constructor(private specificationRepository: ISpecificationRepository){
    }
     execute({ name, description}: IRequest): void{
@@ -22,6 +22,11 @@ class createSpecificationService {
        const specification = this.specificationRepository.findByName(name);
        return specification;
    }
+
+   findById(id: string): Specification{
+    const specification = this.specificationRepository.findById(id);
+    return specification;
+   }
 }
 
-export { createSpecificationService };
+export { CreateSpecificationService };

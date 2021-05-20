@@ -1,13 +1,15 @@
-import { request, response, Router } from 'express';
+import { Router } from 'express';
+import { CategoryController } from '../modules/cars/controllers/categoryController';
 import { CategoryRepositories } from '../modules/cars/repositories/category.repository';
 import { CategoryService } from '../modules/cars/services/category.service';
 
 const categoriesRoutes = Router();
-
+const categoryController = new CategoryController();
 const categoryRepository = new CategoryRepositories();
+const categoryService = new CategoryService(categoryRepository);
+
 categoriesRoutes.post("/", (request, response)=>{
     const { name, description } = request.body;
-    const categoryService = new CategoryService(categoryRepository);
     categoryService.execute({ name, description});
     return response.status(201).json(categoryService);
 });
@@ -18,8 +20,7 @@ categoriesRoutes.get("/", (request, response)=>{
 });
 
 categoriesRoutes.get("/", (request, response)=>{
-    const { name } = request.body;
-    const category = categoryRepository.findByName(name);
-    return response.status(200).json({category});
+    const res = categoryController.filterByName(request, response);
+    return response.json(res);
 })
 export { categoriesRoutes };

@@ -16,7 +16,7 @@ class CategoryRepositories {
         name,
         description, 
         created_at: new Date()
-    })
+    });
     // const category: Category = {
     //     
     // };
@@ -31,7 +31,10 @@ class CategoryRepositories {
    }
 
    findByName(name: string): Category{
-      const category = this.categories.find(category=> category.name === name);
+    
+      const category = this.categories.find(category => category.name === name);
+      const res = JSON.stringify(this.categories);
+      console.log(res);
       return category;
    }
 }
