@@ -4,7 +4,7 @@ import { Specification } from "../model/specification.model";
 
 
 class SpecificationRepository implements ISpecificationRepository{
-    private specifications: Specification[] = [];
+    private specifications: Specification[];
     
     private static INSTANCE: SpecificationRepository;
 
@@ -31,13 +31,13 @@ class SpecificationRepository implements ISpecificationRepository{
     }
 
     findByName(name: string): Specification {
-       const specification = this.specifications.find(res => res.name === name);
-       return specification;
+       const specificationName = this.specifications.find(specification => specification.name == name);
+       return specificationName;
     }
 
     findById(id: string): Specification {
-        const specification = this.specifications.find(res => res.id === id);
-        return specification;
+        const specificationID = this.specifications.find(specification => specification.id == id);
+        return specificationID;
     }
 
     list(): Specification[]{
