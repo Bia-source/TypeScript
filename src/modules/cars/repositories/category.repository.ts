@@ -1,13 +1,23 @@
 import { Category } from "../model/category.model";
 import { ICategoriesRepository, ICreateCategoryDTO } from "../interfaces/ICategoriesRepository";
+import { categoriesRoutes } from "../../../routes/categoties.routes";
 
 //DTO => Data transfer object 
 class CategoryRepositories {
    private categories: Category[] = [];
+   
+   private static INSTANCE: CategoryRepositories;
 
-   constructor(){
+   private constructor(){
      this.categories = [];
    }
+
+   public static getIntance(): CategoryRepositories{
+    if(!CategoryRepositories.INSTANCE){
+        CategoryRepositories.INSTANCE = new CategoryRepositories();
+    }
+    return CategoryRepositories.INSTANCE;
+  }
 
    create({ name, description}: ICreateCategoryDTO): void{
     const createdCategory: Category = new Category();
@@ -31,11 +41,13 @@ class CategoryRepositories {
    }
 
    findByName(name: string): Category{
-    
       const category = this.categories.find(category => category.name === name);
-      const res = JSON.stringify(this.categories);
-      console.log(res);
       return category;
+   }
+
+   findById(id:string): Category{
+       const category = this.categories.find(res => res.id === id);
+       return category;
    }
 }
 

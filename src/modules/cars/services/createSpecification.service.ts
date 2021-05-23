@@ -27,6 +27,11 @@ class CreateSpecificationService {
     const specification = this.specificationRepository.findById(id);
     return specification;
    }
+
+   listSpecification(): Specification[]{
+       const specification = this.specificationRepository.list();
+       return specification;
+   }
 }
 
 export { CreateSpecificationService };
