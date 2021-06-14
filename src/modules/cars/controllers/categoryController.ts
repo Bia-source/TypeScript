@@ -29,6 +29,14 @@ class CategoryController{
         return response.status(200).json({ category });
     }
 
+    // IMPORT CATEGORIES
+    handleImport(request: Request, response: Response): Response{
+        const { file } = request;
+        const deleteImport = true;
+        this.categoryService.executeImport(file);
+        return response.send();
+    }
+
 }
 
 export { CategoryController };

@@ -23,4 +23,8 @@ categoriesRoutes.get("/:id", (request, response)=>{
     const category = categoryController.findById(request,response);
     return response.json({ category }); 
 });
+
+categoriesRoutes.post("/imports", (request, response)=>{
+    return categoryController.handleImport(request, response);
+})
 export { categoriesRoutes };
