@@ -9,6 +9,11 @@ interface IRequest {
     description: string;
 }
 
+interface IImportCategory{
+    name: string;
+    description: string;
+}
+
 class CategoryService {
   constructor(private categoriesRepository: ICategoriesRepository){ 
     
@@ -40,8 +45,9 @@ class CategoryService {
  //IMPORT CATEGORIES
  executeImport(file: Express.Multer.File): void{
      // recebendo o arquivo, criando uma stream de leitura, passando 
-     // o caminho do arquivo para a pasta ./temp
+     // o caminho(path) do arquivo para a pasta ./temp
      // pegando todos os dados que foram lidos e repassando por pipe
+     // pipe delimitador default delimita uma linha por virgula
     const stream = fs.createReadStream(file.path);
     const parseFile = csvParse();
     stream.pipe(parseFile);
@@ -57,6 +63,32 @@ class CategoryService {
     //       });
     // }
  }
+
+   // Function responsavel apenas por fazer a leitura das categorias
+   loadingCategories(file: Express.Multer.File): Promise<IImportCategory[]>{
+    return new Promise((resolve, reject)=>{
+      const stream = fs.createReadStream(file.path);
+      const categories: IImportCategory[]=[];
+      const parseFile = csvParse();
+      stream.pipe(parseFile);
+      parseFile.on("data", async (res)=>{
+      const [name, description] = res;
+      categories.push({
+          name,
+          description
+      });
+     }).on("end", ()=>{
+         resolve(categories);
+     }).on("error", (err)=>{
+         reject(err);
+     })
+    })
+   }
+
+   async executeImportCategory(file: Express.Multer.File):Promise<void>{
+       const categories = await this.loadingCategories(file);
+       console.log(categories);
+   }
 }
 
 export { CategoryService };

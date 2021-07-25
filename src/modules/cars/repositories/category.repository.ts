@@ -49,6 +49,10 @@ class CategoryRepositories {
        const category = this.categories.find(res => res.id === id);
        return category;
    }
+
+   saveImport(importFile: Express.Multer.File):void{
+       //TODO
+   }
 }
 
 export { CategoryRepositories };

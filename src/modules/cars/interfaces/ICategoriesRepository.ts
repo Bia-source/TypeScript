@@ -11,6 +11,7 @@ interface ICategoriesRepository{
    list(): Category[];
    create({ name, description}: ICreateCategoryDTO): void;
    findById(id:string): Category;
+   saveImport(importFile:Express.Multer.File):void;
 }
 
 export { ICategoriesRepository, ICreateCategoryDTO };

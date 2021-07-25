@@ -32,8 +32,8 @@ class CategoryController{
     // IMPORT CATEGORIES
     handleImport(request: Request, response: Response): Response{
         const { file } = request;
-        const deleteImport = true;
-        this.categoryService.executeImport(file);
+        //const deleteImport = true;
+        this.categoryService.executeImportCategory(file);
         return response.send();
     }
 
