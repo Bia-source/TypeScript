@@ -2,6 +2,7 @@ import { ICategoriesRepository } from '../interfaces/ICategoriesRepository';
 import { Category } from '../model/category.model';
 import fs from "fs";
 import csvParse from "csv-parse";
+import { CategoryRepositories } from '../repositories/category.repository';
 
 
 interface IRequest {
@@ -15,20 +16,20 @@ interface IImportCategory{
 }
 
 class CategoryService {
-  constructor(private categoriesRepository: ICategoriesRepository){ 
+  constructor(private categoriesRepository: CategoryRepositories){ 
     
   }
 
   execute({ name, description}: IRequest){  
     const categoryAlreadyExists = this.categoriesRepository.findByName(name);
     if(categoryAlreadyExists){
-        throw new Error("Category already exist!");
-    }
-    this.categoriesRepository.create({name, description});
+       throw new Error("Category already exist!");
+     }
+     this.categoriesRepository.create({name, description});
   }
 
   findByName(name:string): Category{
-    const category = this.categoriesRepository.findByName(name);
+   const category = this.categoriesRepository.findByName(name); 
     return category;
   }
 
@@ -85,9 +86,18 @@ class CategoryService {
     })
    }
 
+
+   // TODO parar de replicar categoria que já existe 
    async executeImportCategory(file: Express.Multer.File):Promise<void>{
        const categories = await this.loadingCategories(file);
-       console.log(categories);
+       categories.map(async category =>{
+           const { name, description} = category;
+           const categoryAlreadyExists = this.categoriesRepository.findByName(name);
+           if(categoryAlreadyExists){
+             throw new Error("Category already exist!");
+           } 
+           return this.categoriesRepository.create({name,description});
+       }) 
    }
 }
 
