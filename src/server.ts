@@ -1,12 +1,16 @@
-import express, { json } from 'express';
+import express from 'express';
 import  connection  from './conection/database';
+import swaggerUi from 'swagger-ui-express';
+import swaggerFile from './swagger.json';
 import { router } from './routes/index';
 
 const app = express();
 
 connection();
 
-app.use(json());
+app.use(express.json());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(router);
 
