@@ -15,6 +15,7 @@ var EstadoCivil;
     EstadoCivil["dv"] = "Divorciado";
     EstadoCivil["vv"] = "Vi\u00FAvo";
 })(EstadoCivil || (EstadoCivil = {}));
+//============================CRIANDO FUNCTION======================\\
 function testeStat(estado) {
     if (estado === EstadoCivil.cs) {
         console.log(EstadoCivil.cs);
@@ -30,6 +31,8 @@ function testeStat(estado) {
     }
 }
 //testeStat("Casado");
+//=====================================================================
+//============================CRIANDO CLASSE=========================\\
 var Car = /** @class */ (function () {
     function Car(name, color, power) {
         this.name = name;
@@ -75,11 +78,19 @@ var Car2 = /** @class */ (function () {
 ;
 var ferrari = new Car2("Ferrari", "Vermelho", 50);
 var fiesta = new Car2("Fiesta", "prata", 60);
-console.log(ferrari);
-console.log(Car2.list);
+//console.log(ferrari);
+//console.log(Car2.list);
 // alterando nome do carro
 ferrari.setName("Uno");
-console.log(ferrari);
+//console.log(ferrari);
 // alterando nome do carro dentro da lista
 Car2.list[0] = "Uno";
-console.log(Car2.list);
+function people(people) {
+    console.log(people);
+}
+people({ name: "Beatriz", age: 21 });
+function people2(_a) {
+    var name = _a.name, age = _a.age;
+    console.log(name, age);
+}
+people2({ name: "Fernanda", age: 32 });

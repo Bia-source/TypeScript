@@ -25,6 +25,7 @@ enum EstadoCivil {
     vv = 'Viúvo'
 }
 
+//============================CRIANDO FUNCTION======================\\
 function testeStat(estado:string){
    if(estado === EstadoCivil.cs){
        console.log(EstadoCivil.cs);
@@ -37,7 +38,10 @@ function testeStat(estado:string){
    }
 }
 //testeStat("Casado");
+//=====================================================================
 
+
+//============================CRIANDO CLASSE=========================\\
 class Car{
     constructor(public name: string,
          public color: string,
@@ -90,15 +94,39 @@ class Car2{
 
 var ferrari = new Car2("Ferrari", "Vermelho", 50);
 var fiesta = new Car2("Fiesta", "prata", 60);
-console.log(ferrari);
-console.log(Car2.list);
+//console.log(ferrari);
+//console.log(Car2.list);
 
 // alterando nome do carro
 ferrari.setName("Uno");
-console.log(ferrari);
+//console.log(ferrari);
 
 // alterando nome do carro dentro da lista
 Car2.list[0]= "Uno"
-console.log(Car2.list);
+//console.log(Car2.list);
+// ==================================================================
 
-   
+//============================================INTERFACES========================
+
+interface IPeople{
+    name: string;
+    age: number;
+}
+
+function people(people: IPeople):void{
+   console.log(people);
+}
+
+people({name: "Beatriz", age: 21});
+
+function people2({name,age}:IPeople){
+    
+    console.log(name,age);
+}
+people2({name: "Fernanda", age: 32});
+
+//interface com atributos opcionais
+interface IColor{
+    title?: string;
+    codeColor:string;
+}
