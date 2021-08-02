@@ -19,7 +19,7 @@ categoriesRoutes.get("/", (request, response)=>{
     return response.json({ listCategories });
 });
 
-categoriesRoutes.get("/", (request, response)=>{
+categoriesRoutes.get("/name", (request, response)=>{
     const category = categoryController.filterByName(request, response);
     return response.json({ category });
 });
