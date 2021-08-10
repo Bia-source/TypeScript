@@ -19,6 +19,7 @@ categoriesRoutes.get("/", (request, response)=>{
     return response.json({ listCategories });
 });
 
+// TODO passar o parametro por query params
 categoriesRoutes.get("/name", (request, response)=>{
     const category = categoryController.filterByName(request, response);
     return response.json({ category });
