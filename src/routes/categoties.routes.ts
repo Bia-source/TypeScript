@@ -8,32 +8,10 @@ const upload = multer({
     dest: "./temp"
 });
 
-
-categoriesRoutes.post("/", (request, response)=>{
-    categoryController.handleCreateCategory(request,response); 
-    return response.status(201).send();
-});
-
-categoriesRoutes.get("/", (request, response)=>{
-    const listCategories = categoryController.handleListCategory(request,response);
-    return response.json({ listCategories });
-});
-
 // TODO passar o parametro por query params
-categoriesRoutes.get("/name", (request, response)=>{
-    const category = categoryController.filterByName(request, response);
-    return response.json({ category });
-});
-
-categoriesRoutes.get("/:id", (request, response)=>{
-    const category = categoryController.findById(request,response);
-    return response.json({ category }); 
-});
-
-categoriesRoutes.post("/import", upload.single("file"),(request, response)=>{
-//    const { file } = request;
-//    console.log(file);
-   //return response.send();
-   return categoryController.handleImport(request, response);
-})
+categoriesRoutes.get("/name", categoryController.filterByName);
+categoriesRoutes.post("/", categoryController.handleCreateCategory);
+categoriesRoutes.get("/", categoryController.handleListCategory);
+categoriesRoutes.get("/:id",categoryController.findById);
+categoriesRoutes.post("/import", upload.single("file"),categoryController.handleImport)
 export { categoriesRoutes };

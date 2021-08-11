@@ -2,7 +2,8 @@ import { Category } from '../entities/category.model';
 import fs from "fs";
 import csvParse from "csv-parse";
 import { CategoryRepositories } from '../repositories/category.repository';
-
+import { ICategoriesRepository } from '../interfaces/ICategoriesRepository';
+import { inject, injectable } from "tsyringe";
 
 interface IRequest {
     name: string;
@@ -13,38 +14,36 @@ interface IImportCategory{
     name: string;
     description: string;
 }
-
+@injectable()
 class CategoryService {
-  constructor(){ 
+    constructor(
+        @inject("CategoryRepositories")
+        private categoriesRepository: ICategoriesRepository) { 
     
   }
    
   
-    async execute({ name, description }: IRequest) {  
-    const categoriesRepository = new CategoryRepositories();
-    const categoryAlreadyExists = await categoriesRepository.findByName(name);
+    async execute({ name, description }: IRequest) { 
+    const categoryAlreadyExists = await this.categoriesRepository.findByName(name);
     if(categoryAlreadyExists){
        throw new Error("Category already exist!");
      }
-      const newCategory = await categoriesRepository.create({ name, description });
+      const newCategory = await this.categoriesRepository.create({ name, description });
       return newCategory;
   }
 
     async findByName(name: string): Promise<Category>{
-     const categoriesRepository = new CategoryRepositories();
-     const category = await categoriesRepository.findByName(name); 
+     const category = await this.categoriesRepository.findByName(name); 
     return category;
   }
 
-    async list(): Promise<Category[]>{
-     const categoriesRepository = new CategoryRepositories(); 
-     const category = await categoriesRepository.list();
+    async list(): Promise<Category[]>{ 
+     const category = await this.categoriesRepository.list();
     return category;
   }
 
     async findById(id: string): Promise<Category>{
-     const categoriesRepository = new CategoryRepositories();
-     const category = await categoriesRepository.findById(id);
+     const category = await this.categoriesRepository.findById(id);
     return category;
  }
 

@@ -1,29 +1,32 @@
 import { Request, Response } from 'express';
 import { CategoryService } from '../services/category.service';
-
+import { container } from "tsyringe"
 class CategoryController{
-   private categoryService = new CategoryService();
-
+   
     async handleCreateCategory(request: Request, response: Response): Promise<Response>{
         const { name, description } = request.body;
-        const category = await this.categoryService.execute({ name, description});
+        const categoryService = container.resolve(CategoryService);
+        const category = await categoryService.execute({ name, description});
         return response.status(201).json({category:category});
     }
 
     async handleListCategory(request: Request, response: Response): Promise<Response>{
-       const listCategories = await this.categoryService.list();
+       const categoryService = container.resolve(CategoryService);
+       const listCategories = await categoryService.list();
        return response.status(200).json({ listCategories:listCategories });
     }
 
     async filterByName(request: Request, response: Response): Promise<Response>{
         const { name } = request.body;
-        const category = await this.categoryService.findByName(name);
+        const categoryService = container.resolve(CategoryService);
+        const category = await categoryService.findByName(name);
         return response.status(200).json({ category:category });
     }
 
     async findById(request: Request, response: Response): Promise<Response>{
         const { id } = request.params;
-        const category = await this.categoryService.findById(id);
+        const categoryService = container.resolve(CategoryService);
+        const category = await categoryService.findById(id);
         return response.status(200).json({ category:category });
     }
 
@@ -31,7 +34,8 @@ class CategoryController{
     async handleImport(request: Request, response: Response): Promise<Response>{
         const { file } = request;
         //const deleteImport = true;
-        await this.categoryService.executeImportCategory(file);
+        const categoryService = container.resolve(CategoryService);
+        await categoryService.executeImportCategory(file);
         return response.send();
     }
 
