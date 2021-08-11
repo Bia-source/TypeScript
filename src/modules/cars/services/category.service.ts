@@ -1,5 +1,4 @@
-import { ICategoriesRepository } from '../interfaces/ICategoriesRepository';
-import { Category } from '../model/category.model';
+import { Category } from '../entities/category.model';
 import fs from "fs";
 import csvParse from "csv-parse";
 import { CategoryRepositories } from '../repositories/category.repository';
@@ -16,35 +15,41 @@ interface IImportCategory{
 }
 
 class CategoryService {
-  constructor(private categoriesRepository: CategoryRepositories){ 
+  constructor(){ 
     
   }
-
-  execute({ name, description}: IRequest){  
-    const categoryAlreadyExists = this.categoriesRepository.findByName(name);
+   
+  
+    async execute({ name, description }: IRequest) {  
+    const categoriesRepository = new CategoryRepositories();
+    const categoryAlreadyExists = await categoriesRepository.findByName(name);
     if(categoryAlreadyExists){
        throw new Error("Category already exist!");
      }
-     this.categoriesRepository.create({name, description});
+      const newCategory = await categoriesRepository.create({ name, description });
+      return newCategory;
   }
 
-  findByName(name:string): Category{
-   const category = this.categoriesRepository.findByName(name); 
+    async findByName(name: string): Promise<Category>{
+     const categoriesRepository = new CategoryRepositories();
+     const category = await categoriesRepository.findByName(name); 
     return category;
   }
 
-  list(): Category[]{
-    const category = this.categoriesRepository.list();
+    async list(): Promise<Category[]>{
+     const categoriesRepository = new CategoryRepositories(); 
+     const category = await categoriesRepository.list();
     return category;
- }
+  }
 
- findById(id:string): Category{
-     const category = this.categoriesRepository.findById(id);
-     return category;
+    async findById(id: string): Promise<Category>{
+     const categoriesRepository = new CategoryRepositories();
+     const category = await categoriesRepository.findById(id);
+    return category;
  }
 
  //IMPORT CATEGORIES
- executeImport(file: Express.Multer.File): void{
+ executeImport(file: Express.Multer.File):void{
      // recebendo o arquivo, criando uma stream de leitura, passando 
      // o caminho(path) do arquivo para a pasta ./temp
      // pegando todos os dados que foram lidos e repassando por pipe
@@ -89,15 +94,16 @@ class CategoryService {
 
 
    // TODO parar de replicar categoria que já existe 
-   async executeImportCategory(file: Express.Multer.File):Promise<void>{
+    async executeImportCategory(file: Express.Multer.File): Promise<void>{
+       const categoriesRepository = new CategoryRepositories();
        const categories = await this.loadingCategories(file);
        categories.map(async category =>{
            const { name, description} = category;
-           const categoryAlreadyExists = this.categoriesRepository.findByName(name);
+           const categoryAlreadyExists = categoriesRepository.findByName(name);
            if(categoryAlreadyExists){
              throw new Error("Category already exist!");
            } 
-           return this.categoriesRepository.create({name,description});
+           return categoriesRepository.create({name,description});
        }) 
    }
 }

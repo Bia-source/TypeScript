@@ -1,4 +1,4 @@
-import { Category } from "../model/category.model";
+import { Category } from "../entities/category.model";
 
 
 interface ICreateCategoryDTO{
@@ -7,11 +7,11 @@ interface ICreateCategoryDTO{
 }
 
 interface ICategoriesRepository{
-   findByName(name: string): Category;
-   list(): Category[];
-   create({ name, description}: ICreateCategoryDTO): void;
-   findById(id:string): Category;
-   saveImport(importFile:Express.Multer.File):void;
+   findByName(name: string): Promise<Category>;
+   list(): Promise<Category[]>;
+   create({ name, description}: ICreateCategoryDTO): Promise<void>;
+   findById(id:string): Promise<Category>;
+   saveImport(importFile:Express.Multer.File): Promise<void>;
 }
 
 export { ICategoriesRepository, ICreateCategoryDTO };

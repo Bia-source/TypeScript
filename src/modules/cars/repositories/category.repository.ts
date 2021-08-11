@@ -1,15 +1,15 @@
-import { Category } from "../model/category.model";
-import { ICategoriesRepository, ICreateCategoryDTO } from "../interfaces/ICategoriesRepository";
-import { categoriesRoutes } from "../../../routes/categoties.routes";
+import { Category } from "../entities/category.model";
+import { ICreateCategoryDTO } from "../interfaces/ICategoriesRepository";
+import { EntityRepository, getRepository, Repository } from "typeorm";
 
-//DTO => Data transfer object 
+@EntityRepository()
 class CategoryRepositories {
-   private categories: Category[] = [];
+   private repository: Repository<Category>
    
    private static INSTANCE: CategoryRepositories;
 
-   private constructor(){
-     this.categories = [];
+   public constructor(){
+       this.repository = getRepository(Category);
    }
 
    public static getIntance(): CategoryRepositories{
@@ -19,38 +19,40 @@ class CategoryRepositories {
     return CategoryRepositories.INSTANCE;
   }
 
-   create({ name, description}: ICreateCategoryDTO): void{
-    const createdCategory: Category = new Category();
+   async create({ name, description}: ICreateCategoryDTO):Promise<Category>{
     //primeiro parametro o objeto e o segundo o que quero colocar dentro dele
-    Object.assign(createdCategory, {
-        name,
-        description, 
-        created_at: new Date()
+    const newCategory = await this.repository.create({
+     name,
+     description
     });
-    // const category: Category = {
-    //     
-    // };
-
-    // const data = { ...createdCategory, ...category}
-    
-    this.categories.push(createdCategory);
+    await this.repository.save(newCategory);
+    return newCategory;
    }
 
-   list(): Category[]{
-      return this.categories;
+   async list(): Promise<Category[]>{
+     const listCategories = await this.repository.find();
+     return listCategories;
    }
 
-   findByName(name: string): Category{
-      const category = this.categories.find(category => category.name === name);
+   async findByName(name: string): Promise<Category>{
+     const category = await this.repository.findOne({
+           where: {
+              name
+          }
+      });
       return category;
    }
 
-   findById(id:string): Category{
-       const category = this.categories.find(res => res.id === id);
+  async findById(id:string): Promise<Category>{
+       const category = await this.repository.findOne({
+           where: {
+               id
+           }
+       })
        return category;
    }
 
-   saveImport(importFile: Express.Multer.File):void{
+   async saveImport(importFile: Express.Multer.File):Promise<void>{
        //TODO
    }
 }

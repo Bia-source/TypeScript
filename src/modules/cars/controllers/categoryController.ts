@@ -1,39 +1,37 @@
 import { Request, Response } from 'express';
-import { CategoryRepositories } from '../repositories/category.repository';
 import { CategoryService } from '../services/category.service';
 
 class CategoryController{
-   private categoryRepository = CategoryRepositories.getIntance();
-   private categoryService = new CategoryService(this.categoryRepository);
+   private categoryService = new CategoryService();
 
-    handleCreateCategory(request: Request, response: Response): Response{
+    async handleCreateCategory(request: Request, response: Response): Promise<Response>{
         const { name, description } = request.body;
-        this.categoryService.execute({ name, description});
-        return response.status(201);
+        const category = await this.categoryService.execute({ name, description});
+        return response.status(201).json({category:category});
     }
 
-    handleListCategory(request: Request, response: Response): Response{
-       const listCategories = this.categoryService.list();
-       return response.status(200).json({ listCategories });
+    async handleListCategory(request: Request, response: Response): Promise<Response>{
+       const listCategories = await this.categoryService.list();
+       return response.status(200).json({ listCategories:listCategories });
     }
 
-    filterByName(request: Request, response: Response): Response{
+    async filterByName(request: Request, response: Response): Promise<Response>{
         const { name } = request.body;
-        const category = this.categoryService.findByName(name);
-        return response.status(200).json({ category });
+        const category = await this.categoryService.findByName(name);
+        return response.status(200).json({ category:category });
     }
 
-    findById(request: Request, response: Response): Response{
+    async findById(request: Request, response: Response): Promise<Response>{
         const { id } = request.params;
-        const category = this.categoryService.findById(id);
-        return response.status(200).json({ category });
+        const category = await this.categoryService.findById(id);
+        return response.status(200).json({ category:category });
     }
 
     // IMPORT CATEGORIES
-    handleImport(request: Request, response: Response): Response{
+    async handleImport(request: Request, response: Response): Promise<Response>{
         const { file } = request;
         //const deleteImport = true;
-        this.categoryService.executeImportCategory(file);
+        await this.categoryService.executeImportCategory(file);
         return response.send();
     }
 
