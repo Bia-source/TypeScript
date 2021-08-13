@@ -28,7 +28,14 @@ class SpecificationController{
     async handleListSpecification(request: Request, response: Response): Promise<Response>{
      const specificationService = container.resolve(CreateSpecificationService);
      const list = await specificationService.listSpecification();
-    return response.status(200).json({list})
+     return response.status(200).json({list})
+    }
+
+    async handleUpdateSpecification(request: Request, response: Response): Promise<Response> { 
+        const { name, description, id } = request.body;
+        const specificationService = container.resolve(CreateSpecificationService);
+        const specificationUpdate = specificationService.updateSpecification(name, description, id);
+        return response.status(200).json(specificationUpdate);
     }
 }
 

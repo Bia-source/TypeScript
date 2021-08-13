@@ -32,7 +32,18 @@ class SpecificationRepository {
 
     async list(): Promise<Specification[]>{
         return await this.repository.find();
-     }
+    }
+    
+    async updateSpecification(name?: string, description?: string, id?: string): Promise<Specification>{
+        const specification = await this.repository.findOne({ id });
+        let newSpecification = {
+            name: name || specification.name,
+            description: description || specification.description
+        }
+        await this.repository.update(id, newSpecification);
+        const changeSpecification = this.repository.findOne({ id });
+        return changeSpecification;
+    }
     
 }
 

@@ -96,15 +96,20 @@ class CategoryService {
     async executeImportCategory(file: Express.Multer.File): Promise<void>{
        const categoriesRepository = new CategoryRepositories();
        const categories = await this.loadingCategories(file);
-       categories.map(async category =>{
-           const { name, description} = category;
-           const categoryAlreadyExists = categoriesRepository.findByName(name);
-           if(categoryAlreadyExists){
-             throw new Error("Category already exist!");
-           } 
-           return categoriesRepository.create({name,description});
-       }) 
-   }
+        categories.map(async category => {
+            const { name, description } = category;
+            const categoryAlreadyExists = categoriesRepository.findByName(name);
+            if (categoryAlreadyExists) {
+                throw new Error("Category already exist!");
+            }
+            return categoriesRepository.create({ name, description });
+        });
+    }
+    
+    async updateCategory(name?: string, description?: string, id?: string): Promise<Category>{
+        const category  = await this.categoriesRepository.updateCategory({ name, description }, id);
+        return category;
+    }
 }
 
 export { CategoryService };

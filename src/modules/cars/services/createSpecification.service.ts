@@ -40,6 +40,11 @@ class CreateSpecificationService {
        const specification = await this.specificationRepository.list();
        return specification;
    }
+    
+    async updateSpecification(name?: string, description?: string, id?: string): Promise<Specification>{
+        const specification = await this.specificationRepository.updateSpecification({ name, description }, id);
+        return specification;
+   }
 }
 
 export { CreateSpecificationService };

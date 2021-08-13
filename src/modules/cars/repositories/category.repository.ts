@@ -46,6 +46,17 @@ class CategoryRepositories {
    async saveImport(importFile: Express.Multer.File):Promise<void>{
        //TODO
    }
+    
+    async updateCategory(name?: string, description?: string, id?:string): Promise<Category>{
+        const category = await this.repository.findOne({ id });
+        let newCategory = {
+            name: name || category.name,
+            description: description || category.description
+        }
+        await this.repository.update(id, newCategory);
+        const changeCategory = this.repository.findOne({ id });
+        return changeCategory;
+   }
 }
 
 export { CategoryRepositories };
