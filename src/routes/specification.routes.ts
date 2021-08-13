@@ -4,23 +4,9 @@ import { SpecificationController } from '../modules/cars/controllers/specificati
 const specificationRoutes = Router();
 const specificationController = new SpecificationController();
 
-specificationRoutes.post("/", (request, response)=>{
-    specificationController.handleCreateSpecification(request, response);
-    return response.status(201).send();
-});
+specificationRoutes.post("/", specificationController.handleCreateSpecification);
+specificationRoutes.get("/",specificationController.handleListSpecification);
+specificationRoutes.get("/", specificationController.filterByName);
+specificationRoutes.get("/:id", specificationController.filterById);
 
-specificationRoutes.get("/", (request, response)=>{
-    const listCategories = specificationController.handleListSpecification(request,response);
-    return response.status(200).json({ listCategories });
-});
-
-specificationRoutes.get("/", (request, response)=>{
-    const specification = specificationController.filterByName(request, response);
-    return response.status(200).json({ specification });
-});
-
-specificationRoutes.get("/:id", (request, response)=>{
-    const specification = specificationController.filterById(request, response);
-    return response.status(200).json({ specification });
-});
 export { specificationRoutes };

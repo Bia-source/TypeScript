@@ -1,34 +1,35 @@
 import { Request, Response } from 'express';
-import { SpecificationRepository } from '../repositories/SpecificationRepository';
 import { CreateSpecificationService } from '../services/createSpecification.service';
+import { container } from "tsyringe";
 
 class SpecificationController{
-   private specificationRepository = SpecificationRepository.getIntance();
-   private specificationService = new CreateSpecificationService(this.specificationRepository);
-
-   handleCreateSpecification(request: Request, response: Response){
+   
+   async handleCreateSpecification(request: Request, response: Response): Promise<Response> {
        const { name, description } = request.body;
-       this.specificationService.execute({name, description});
-       return response.status(201).json(this.specificationService);
-   }
+       const specificationService = container.resolve(CreateSpecificationService);
+       const specification = await specificationService.execute({name, description});
+       return response.status(201).json(specification);
+    }
 
-   filterByName(request: Request, response: Response): Response{
+   async filterByName(request: Request, response: Response): Promise<Response>{
        const { name } = request.body;
-       this.specificationService.findByName(name);
-       return response.status(200).json(this.specificationService); 
-      }
+       const specificationService = container.resolve(CreateSpecificationService);
+       const specification = await specificationService.findByName(name);
+       return response.status(200).json(specification); 
+    }
 
-   filterById(request: Request, response: Response): Response{
+   async filterById(request: Request, response: Response): Promise<Response>{
       const { id } = request.params;
-      this.specificationService.findById(id);
-      return response.status(200).json(this.specificationService);
-   }   
+      const specificationService = container.resolve(CreateSpecificationService);
+      const specification = await specificationService.findById(id);
+      return response.status(200).json(specification);
+    }   
 
-   handleListSpecification(request: Request, response: Response): Response{
-    const list = this.specificationService.listSpecification();
+    async handleListSpecification(request: Request, response: Response): Promise<Response>{
+     const specificationService = container.resolve(CreateSpecificationService);
+     const list = await specificationService.listSpecification();
     return response.status(200).json({list})
-    
-   }
+    }
 }
 
 export { SpecificationController };

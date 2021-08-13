@@ -9,7 +9,7 @@ interface ICreateCategoryDTO{
 interface ICategoriesRepository{
    findByName(name: string): Promise<Category>;
    list(): Promise<Category[]>;
-   create({ name, description}: ICreateCategoryDTO): Promise<void>;
+   create({ name, description}: ICreateCategoryDTO): Promise<Category>;
    findById(id:string): Promise<Category>;
    saveImport(importFile:Express.Multer.File): Promise<void>;
 }

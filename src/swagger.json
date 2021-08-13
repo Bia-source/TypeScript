@@ -88,7 +88,7 @@
                       "content": {
                           "application/json": {
                               "schema": {
-                                  "type":"string",
+                                  "type":"object",
                                   "properties": {
                                     "name": {
                                         "type": "string"
@@ -97,43 +97,32 @@
                                   
                         "example": {
                             "name": "category name sample"
-                      }
-                              }
+                            }
+                           }
                           }
-                          }
-                        }
-                  },
-                  "responses": {
-                      "200": {
-                          "description": "Success",
-                          "content": {
-                            "application/json":{
-                                "schema": {
-                                    "type": "array",
-                                     "items": {
-                                         "type": "object",
-                                         "properties": {
-                                             "name": {
-                                                 "type": "string"
-                                             },
-                                             "description": {
-                                                 "type": "string"
-                                             },
-                                             "id": {
-                                                 "type": "string" 
-                                             },
-                                             "created_at": {
-                                                 "type": "string"
-                                             }
-                                         }
-                                     }
+                         }
+                        },
+                        "responses": {
+                            "201": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                        },  
-                      "500": {
-                          "description":"Category name not found!"
-                      }
-                  }
-              }
+                            },
+                            "500": {
+                                "description": "Erro na busca!"
+                            }
+                        }
+                  }   
           },
         "/specification": {
             "post": {
@@ -179,7 +168,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
+                                    "type": "array",
                                     "items": {
                                         "type": "object",
                                         "properties": {
@@ -199,5 +188,4 @@
             }
         }
     }
-}
 }

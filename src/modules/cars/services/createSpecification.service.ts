@@ -1,35 +1,43 @@
 import { ISpecificationRepository } from "../interfaces/ISpecificationRepository";
 import { Specification } from "../entities/specification.model";
+import { inject, injectable } from "tsyringe";
 
 
 interface IRequest {
     name: string;
     description: string;
 }
-
+@injectable()
 class CreateSpecificationService {
-   constructor(private specificationRepository: ISpecificationRepository){
-   }
-    execute({ name, description}: IRequest): void{
-     const specificationAlereadyExist = this.specificationRepository.findByName(name);
+   
+    constructor(
+        @inject("SpecificationRepository")
+        private specificationRepository: ISpecificationRepository) {
+    }
+    
+    async execute({ name, description }: IRequest): Promise<Specification>{
+     
+     const specificationAlereadyExist = await this.specificationRepository.findByName(name);
+     
      if(specificationAlereadyExist){
         throw new Error("Specification already exist!");
      }
-     this.specificationRepository.create({name, description});
+    const newSpecification = await this.specificationRepository.create({ name, description });
+    return newSpecification;
    }
 
-   findByName(name:string): Specification{
-       const specification = this.specificationRepository.findByName(name);
+   async findByName(name:string): Promise<Specification>{
+       const specification = await this.specificationRepository.findByName(name);
        return specification;
    }
 
-   findById(id: string): Specification{
-    const specification = this.specificationRepository.findById(id);
+   async findById(id: string): Promise<Specification>{
+    const specification = await this.specificationRepository.findById(id);
     return specification;
    }
 
-   listSpecification(): Specification[]{
-       const specification = this.specificationRepository.list();
+   async listSpecification(): Promise<Specification[]>{
+       const specification = await this.specificationRepository.list();
        return specification;
    }
 }

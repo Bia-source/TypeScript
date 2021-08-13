@@ -5,19 +5,10 @@ import { EntityRepository, getRepository, Repository } from "typeorm";
 @EntityRepository()
 class CategoryRepositories {
    private repository: Repository<Category>
-   
-   private static INSTANCE: CategoryRepositories;
 
    public constructor(){
        this.repository = getRepository(Category);
    }
-
-   public static getIntance(): CategoryRepositories{
-    if(!CategoryRepositories.INSTANCE){
-        CategoryRepositories.INSTANCE = new CategoryRepositories();
-    }
-    return CategoryRepositories.INSTANCE;
-  }
 
    async create({ name, description}: ICreateCategoryDTO):Promise<Category>{
     //primeiro parametro o objeto e o segundo o que quero colocar dentro dele
