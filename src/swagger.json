@@ -162,7 +162,66 @@
                           }
                       }
                   }
-             }
+             },
+              "put": {
+                  "tags": ["Category"],
+                  "summary": "Update a category",
+                  "description": "Change a category, by id",
+                  "parameters": [{
+                      "name": "id",
+                      "in": "path",
+                      "description": "ID of category to return",
+                      "required": true,
+                      "type": "string"
+                  }],
+                  "requestBody": {
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "name": {
+                                          "type": "string"
+                                      },
+                                      "description": {
+                                          "type": "string"
+                                      },
+                                      "id": {
+                                          "type": "string"
+                                      }
+                                  },
+                                  "example": {
+                                      "name": "new category name",
+                                      "description": "new category description"
+                                  }
+                              }
+                          }
+                      }
+                  },
+                  "responses": {
+                      "200": {
+                          "description": "Update Success",
+                          "content": {
+                              "application/json": {
+                                  "schema": {
+                                      "type": "object",
+                                      "properties": {
+                                          "id": {
+                                              "type": "string"
+                                          },
+                                          "name": {
+                                              "type": "string"
+                                          },
+                                          "description": {
+                                              "type": "string"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
           },
         "/specification": {
             "post": {
@@ -257,6 +316,65 @@
                                             "type": "string"
                                         },
                                         "created_at": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Specification"],
+                "summary": "Update a specification",
+                "description": "Change a specification, by id",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID of specification to return",
+                    "required": true,
+                    "type": "string"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "new specification name",
+                                    "description": "new specification description"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "description": {
                                             "type": "string"
                                         }
                                     }

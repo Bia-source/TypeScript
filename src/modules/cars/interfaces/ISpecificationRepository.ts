@@ -11,7 +11,7 @@ interface ISpecificationRepository{
    findByName(name:string):Promise<Specification>;
    findById(id: string): Promise<Specification>;
    list(): Promise<Specification[]>;
-   updateSpecification({ name, description }: ICreateCategoryDTO, id:string): Promise<Specification>;
+   updateSpecification(name:string, description:string, id:string): Promise<Specification>;
 }
 
 export { ISpecificationRepository, ICreateSpecificationDTO };

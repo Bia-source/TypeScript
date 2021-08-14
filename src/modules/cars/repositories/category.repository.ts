@@ -47,7 +47,8 @@ class CategoryRepositories {
        //TODO
    }
     
-    async updateCategory(name?: string, description?: string, id?:string): Promise<Category>{
+    async updateCategory(name?: string, description?: string, id?: string): Promise<Category>{
+        console.log(id);
         const category = await this.repository.findOne({ id });
         let newCategory = {
             name: name || category.name,
