@@ -32,8 +32,7 @@ class SpecificationController{
     }
 
     async handleUpdateSpecification(request: Request, response: Response): Promise<Response> { 
-        const { name, description } = request.body;
-        const { id } = request.params;
+        const { name, description, id } = request.body;
         const specificationService = container.resolve(CreateSpecificationService);
         const specificationUpdate = specificationService.updateSpecification(name, description, id);
         return response.status(200).json(specificationUpdate);

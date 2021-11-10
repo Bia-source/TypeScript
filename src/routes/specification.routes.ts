@@ -8,6 +8,6 @@ specificationRoutes.post("/", specificationController.handleCreateSpecification)
 specificationRoutes.get("/",specificationController.handleListSpecification);
 specificationRoutes.get("/", specificationController.filterByName);
 specificationRoutes.get("/:id", specificationController.filterById);
-specificationRoutes.put("/:id", specificationController.handleUpdateSpecification);
+specificationRoutes.put("/", specificationController.handleUpdateSpecification);
 
 export { specificationRoutes };

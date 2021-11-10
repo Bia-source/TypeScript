@@ -40,8 +40,7 @@ class CategoryController{
     }
 
     async handleUpdateCategory(request: Request, response: Response): Promise<Response>{
-        const { name, description } = request.body;
-        const { id } = request.params;
+        const { name, description, id } = request.body;
         const categoryService = container.resolve(CategoryService);
         const categoryUpdate = await categoryService.updateCategory(name, description, id);
         return response.status(200).json({ category: categoryUpdate });
