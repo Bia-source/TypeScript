@@ -1,5 +1,5 @@
 import express from 'express';
-import  connection  from './conection/database';
+import connection  from './conection/database';
 import swaggerUi from 'swagger-ui-express';
 import swaggerFile from './swagger.json';
 import { router } from './routes/index';

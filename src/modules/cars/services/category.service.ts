@@ -107,7 +107,7 @@ class CategoryService {
     }
     
     async updateCategory(name?: string, description?: string, id?: string): Promise<Category>{
-        const category  = await this.categoriesRepository.updateCategory({ name, description }, id);
+        const category  = await this.categoriesRepository.updateCategory(name, description, id);
         return category;
     }
 }
