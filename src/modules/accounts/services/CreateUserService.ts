@@ -3,7 +3,7 @@ import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
 import { User } from "../entities/User";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
 import { hash } from "bcrypt";
-import { ValidateProps } from "../providers/validateProps";
+import { ValidateProps } from "../../../providers/validateProps";
 @injectable()
 class CreateUserService{
 

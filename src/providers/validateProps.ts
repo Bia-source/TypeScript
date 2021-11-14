@@ -1,10 +1,10 @@
 import { inject } from "tsyringe"
-import { Category } from "../../cars/entities/category.model"
-import { Specification } from "../../cars/entities/specification.model"
-import { ICategoriesRepository } from "../../cars/interfaces/ICategoriesRepository"
-import { ISpecificationRepository } from "../../cars/interfaces/ISpecificationRepository"
-import { User } from "../entities/User"
-import { IUserRepositories } from "../interfaces/IUsersRepositories"
+import { Category } from "../modules/cars/entities/category.model"
+import { Specification } from "../modules/cars/entities/specification.model"
+import { ICategoriesRepository } from "../modules/cars/interfaces/ICategoriesRepository"
+import { ISpecificationRepository } from "../modules/cars/interfaces/ISpecificationRepository"
+import { User } from "../modules/accounts/entities/User"
+import { IUserRepositories } from "../modules/accounts/interfaces/IUsersRepositories"
 
 interface IReturnValidateUser{
     user: User;
@@ -25,10 +25,10 @@ class ValidateProps{
       return await this.userRepository.getUser(name, email);
     }
 
-    async validateAlreadyExixtsCategory(nameOrId: string): Promise<Category>{
+    async validateAlreadyExixtsCategory(name?: string, id?: string): Promise<Category>{
         let category;
-        const idCategory = await this.categoryRepository.findById(nameOrId);
-        const nameCategory = await this.categoryRepository.findByName(nameOrId);
+        const idCategory = await this.categoryRepository.findById(id);
+        const nameCategory = await this.categoryRepository.findByName(name);
         if(idCategory) {
             category = idCategory;
         }
