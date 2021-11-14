@@ -10,12 +10,11 @@ class CreateUserService{
         @inject("UserRepository")
         private usersRepository: IUserRepositories
     ) { }
-    async execute({ name, password, email, username, driver_license }: ICreateUserDTO): Promise<User> {
+    async execute({ name, password, email, driver_license }: ICreateUserDTO): Promise<User> {
       const user = await this.usersRepository.create({
             name,
             password,
             email,
-            username,
             driver_license
         }); 
         return user;

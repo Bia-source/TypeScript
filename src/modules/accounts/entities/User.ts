@@ -11,9 +11,6 @@ class User{
     @Column()
     name: string;
 
-    @Column()
-    username: string;
-
     @Exclude()
     @Column()
     password: string;
