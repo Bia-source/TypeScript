@@ -2,6 +2,7 @@ import express from 'express';
 import connection  from './conection/database';
 import swaggerUi from 'swagger-ui-express';
 import swaggerFile from './swagger.json';
+import "dotenv/config";
 import { router } from './routes/index';
 import "./database";
 import "./shared/container";

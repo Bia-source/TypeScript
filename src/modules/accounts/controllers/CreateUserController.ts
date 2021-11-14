@@ -6,14 +6,18 @@ class CreateUserController{
 
     async handle(request: Request, response: Response): Promise<Response> {
         const { name, password, email, driver_license } = request.body;
-        const createUserService = container.resolve(CreateUserService);
-        const newUser = await createUserService.execute({
+        try {
+            const createUserService = container.resolve(CreateUserService);
+            const newUser = await createUserService.execute({
             name,
             password,
             email,
             driver_license
-        });
-        return response.status(201).json({ user: newUser });
+            });
+            return response.status(201).json({ user: newUser });
+        } catch (error) {
+            response.json({ error: error.message }); 
+        }
         
     }
 }

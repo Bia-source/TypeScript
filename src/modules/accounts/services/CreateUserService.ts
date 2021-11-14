@@ -2,7 +2,8 @@ import { inject, injectable } from "tsyringe";
 import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
 import { User } from "../entities/User";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
-
+import { hash } from "bcrypt";
+import { ValidateProps } from "../providers/validateProps";
 @injectable()
 class CreateUserService{
 
@@ -11,15 +12,20 @@ class CreateUserService{
         private usersRepository: IUserRepositories
     ) { }
     async execute({ name, password, email, driver_license }: ICreateUserDTO): Promise<User> {
-      const user = await this.usersRepository.create({
+        const validate = new ValidateProps(this.usersRepository);
+        let userValidate = await validate.validateAlreadyExistsUser(name);
+        if(userValidate) {
+            throw new Error("Já existe um usuario com esse nome");
+        }
+        const passwordHash = await hash(password, 8);
+        const user = await this.usersRepository.create({
             name,
-            password,
+            password: passwordHash,
             email,
             driver_license
         }); 
         return user;
     }
-
 }
 
 export { CreateUserService }
