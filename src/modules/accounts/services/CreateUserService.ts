@@ -13,14 +13,11 @@ class CreateUserService{
     ) { }
     async execute({ name, password, email, driver_license }: ICreateUserDTO): Promise<User> {
         const validate = new ValidateProps(this.usersRepository);
-        let userValidateName = await validate.validateAlreadyExistsUser(name);
-        let userValidateEmail = await validate.validateAlreadyExistsUser(email);
-        if(userValidateName) {
-            throw new Error("Já existe um usuario com esse nome");
+        let userValidate = await validate.validateAlreadyExistsUser(name,email);
+        if(userValidate) {
+            throw new Error(`Já existe um usuario com esse ${userValidate.type}`);
         }
-        if(userValidateEmail) {
-            throw new Error("Já existe um usuario com esse email");
-        }
+        
         const passwordHash = await hash(password, 8);
         const user = await this.usersRepository.create({
             name,

@@ -1,5 +1,6 @@
 import { EntityRepository, getCustomRepository, getRepository, Repository } from "typeorm";
 import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
+import { IReturnGetUser } from "../dtos/IReturnGetUserDTO";
 import { User } from "../entities/User";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
 
@@ -10,27 +11,34 @@ class UserRepository implements IUserRepositories{
     constructor() {
         this.repository = getRepository(User);
     }
-    async getUser(nameOrEmail: string): Promise<User> {
-        let user;
+    async getUser(name?: string, email?: string): Promise<IReturnGetUser> {
+        let user: IReturnGetUser;
         const userName = await this.repository.findOne({
             where: {
-                name: nameOrEmail
+                name: name
             }
         });
 
         const userEmail = await this.repository.findOne({
             where: {
-                email: nameOrEmail
+                email: email
             }
         });
 
         if(userName) {
-            user = userName;
+            user = {
+                user: userName,
+                type: "name"
+            };
+            return user;
         }
-        if(userEmail){
-            user = userEmail;
+        if(userEmail) {
+            user = {
+                user: userEmail,
+                type: "email"
+            };
+            return user;
         }
-        return user;
     }
 
     async create({name, email, password, driver_license}: ICreateUserDTO): Promise<User> {

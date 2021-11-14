@@ -6,6 +6,10 @@ import { ISpecificationRepository } from "../../cars/interfaces/ISpecificationRe
 import { User } from "../entities/User"
 import { IUserRepositories } from "../interfaces/IUsersRepositories"
 
+interface IReturnValidateUser{
+    user: User;
+    type: string;
+}
 class ValidateProps{
     constructor(
         @inject("UserRepository")
@@ -17,9 +21,8 @@ class ValidateProps{
     ) { }
     
 
-    async validateAlreadyExistsUser(nameOrEmail: string): Promise<User> {
-        const user = await this.userRepository.getUser(nameOrEmail);
-        return user;
+    async validateAlreadyExistsUser(name?: string, email?: string): Promise<IReturnValidateUser> {
+      return await this.userRepository.getUser(name, email);
     }
 
     async validateAlreadyExixtsCategory(nameOrId: string): Promise<Category>{
