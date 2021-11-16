@@ -19,30 +19,33 @@ class UserRepository implements IUserRepositories{
     
     async getUser(name?: string, email?: string): Promise<IReturnGetUser> {
         let user: IReturnGetUser;
-        const userName = await this.repository.findOne({
-            where: {
+        if(name != null) {
+           const userName = await this.repository.findOne({
+              where: {
                 name: name
+              }
+            });
+            if(userName) {
+              user = {
+                user: userName,
+                type: "name"
+              };
             }
-        });
-
-        const userEmail = await this.repository.findOne({
+        } 
+        if(email != null) {
+            const userEmail = await this.repository.findOne({
             where: {
                 email: email
             }
-        });
-    
-        if(userName) {
-            user = {
-                user: userName,
-                type: "name"
-            };
-        }
-        if(userEmail) {
-            user = {
+            });
+            if(userEmail) {
+              user = {
                 user: userEmail,
                 type: "email"
-            };
+              };
+            }
         }
+        
         return user;
     }
 
@@ -59,7 +62,7 @@ class UserRepository implements IUserRepositories{
         return saveUser;
     }
 
-    private async validateUser(method: string, name?:string, email?: string) {
+    private async validateUser(method: string, name?: string, email?: string) {
         let userAlreadyExistsName = await this.getUser(name, null);
         let userAlreadyExistsEmail = await this.getUser(null,email);
         if(userAlreadyExistsEmail) {

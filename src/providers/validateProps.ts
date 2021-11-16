@@ -20,14 +20,11 @@ class ValidateProps{
         private specificationRepository?: ISpecificationRepository
     ) { }
     
-
-    async validateAlreadyExistsUser(name?: string, email?: string): Promise<IReturnValidateUser> {
-        if(!name) {
-          return await this.userRepository.getUser(null,email);
-        } 
-        if(!email) {
-            return await this.userRepository.getUser(name,null);
-        }
+    // Revisar essa Validação, Não esta funcionando 
+    async validateAlreadyExistsUser(name?: string, email?: string): Promise<any> {
+        
+         await this.userRepository.getUser(name, null);
+         //await this.userRepository.getUser(null,email);
     }
 
     async validateAlreadyExistsSpecification(name?: string, id?: string): Promise<Specification>{
