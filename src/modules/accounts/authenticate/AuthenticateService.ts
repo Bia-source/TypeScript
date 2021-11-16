@@ -4,6 +4,7 @@ import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken"
 import { classToPlain } from "class-transformer";
+import { AppError } from "../../../shared/Error/AppError";
 
 interface IRequest {
     email: string;
@@ -19,14 +20,14 @@ interface IRequest {
     }
     
     async execute({email, password}: IRequest): Promise<Object> {
-         const user = await this.userRepository.filterByEmail(email);
+         const user = await this.userRepository.findByEmail(email);
          if(!user) {
-             throw new Error(MESSAGE_ERROR.AUTHENTICATE_USER);
+             throw new AppError(MESSAGE_ERROR.AUTHENTICATE_USER);
          }
 
         const passwordMacth = await compare(password, user.password)
         if(!passwordMacth) {
-            throw new Error(MESSAGE_ERROR.AUTHENTICATE_USER);
+            throw new AppError(MESSAGE_ERROR.AUTHENTICATE_USER);
         }
 
 

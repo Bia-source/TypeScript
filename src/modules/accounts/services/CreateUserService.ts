@@ -5,6 +5,7 @@ import { IUserRepositories } from "../interfaces/IUsersRepositories";
 import { hash } from "bcrypt";
 import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 import { classToPlain } from "class-transformer";
+import { AppError } from "../../../shared/Error/AppError";
 @injectable()
 class CreateUserService{
 
@@ -24,7 +25,7 @@ class CreateUserService{
 
             return classToPlain(user);
         } catch (error) {
-            throw new Error(MESSAGE_ERROR.CREATE_USER);
+            throw new AppError(MESSAGE_ERROR.CREATE_USER);
         }
         
     }

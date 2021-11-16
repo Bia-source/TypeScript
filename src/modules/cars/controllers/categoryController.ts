@@ -21,7 +21,7 @@ class CategoryController{
        return response.status(200).json({ listCategories:listCategories });
     }
 
-    async filterByName(request: Request, response: Response): Promise<Response>{
+    async findByName(request: Request, response: Response): Promise<Response>{
         const { name } = request.body;
         const categoryService = container.resolve(CategoryService);
         const category = await categoryService.findByName(name);

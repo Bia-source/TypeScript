@@ -16,24 +16,36 @@ class SpecificationController{
        
     }
 
-   async filterByName(request: Request, response: Response): Promise<Response>{
+   async findByName(request: Request, response: Response): Promise<Response>{
        const { name } = request.body;
-       const specificationService = container.resolve(CreateSpecificationService);
-       const specification = await specificationService.findByName(name);
-       return response.status(200).json(specification); 
+       try {
+           const specificationService = container.resolve(CreateSpecificationService);
+           const specification = await specificationService.findByName(name);
+           return response.status(200).json(specification); 
+       } catch (error) {
+           return response.json({ error: error.message });
+       }
     }
 
-   async filterById(request: Request, response: Response): Promise<Response>{
+   async findById(request: Request, response: Response): Promise<Response>{
       const { id } = request.params;
-      const specificationService = container.resolve(CreateSpecificationService);
-      const specification = await specificationService.findById(id);
-      return response.status(200).json(specification);
+      try {
+          const specificationService = container.resolve(CreateSpecificationService);
+          const specification = await specificationService.findById(id);
+          return response.status(200).json(specification);
+      } catch (error) {
+          return response.json({ error: error.message });
+      }
     }   
 
     async handleListSpecification(request: Request, response: Response): Promise<Response>{
-     const specificationService = container.resolve(CreateSpecificationService);
-     const list = await specificationService.listSpecification();
-     return response.status(200).json({list})
+     try {
+         const specificationService = container.resolve(CreateSpecificationService);
+         const list = await specificationService.listSpecification();
+         return response.status(200).json({list})
+     } catch (error) {
+         return response.json({ error: error.message });
+     }
     }
 
     async handleUpdateSpecification(request: Request, response: Response): Promise<Response> { 

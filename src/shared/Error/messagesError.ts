@@ -5,6 +5,8 @@ export enum MESSAGE_ERROR{
     VALIDATE_USER_NAME = "Esse nome de usuario já existe, tente outro!",
     VALIDATE_USER_EMAIL = "Esse email de usuario já existe, tente outro!",
     AUTHENTICATE_USER = "Email ou senha incorreto!",
+    TOKEN_INVALID = "token.invalid",
+    USER_NO_EXISTS = "Esse usuário não existe",
     // Erros de categorias 
     VALIDATE_CATEGORY_NOT_FOUND = "Essa categoria não foi encontrada",
     VALIDATE_CATEGORY_EXISTS = "Já existe uma categoria com esse nome",

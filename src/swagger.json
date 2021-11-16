@@ -216,7 +216,7 @@
           "/categories/name": {
               "get": {
                   "tags": ["Category"],
-                  "summary":"Filter a category",
+                  "summary":"Find a category",
                   "description": "Find a category by name",
                   "requestBody": {
                       "content": {
@@ -261,8 +261,8 @@
           "/categories/:id":{
              "get":{
                   "tags": ["Category"],
-                  "summary": "Filter by id",
-                  "description": "Filter a category by id",
+                  "summary": "Find by id",
+                  "description": "Find a category by id",
                   "parameters": [{
                       "name": "id",
                       "in": "path",
@@ -364,8 +364,8 @@
         "/specification/:id":{
             "get": {
                 "tags": ["Specification"],
-                "summary": "Filter by id",
-                "description": "Filter a specification by id",
+                "summary": "Find by id",
+                "description": "Find a specification by id",
                 "parameters": [{
                     "name": "id",
                     "in": "path",

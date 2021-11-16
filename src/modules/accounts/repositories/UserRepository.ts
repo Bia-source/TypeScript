@@ -5,6 +5,7 @@ import { User } from "../entities/User";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
 import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 import { classToPlain } from "class-transformer";
+import { AppError } from "../../../shared/Error/AppError";
 
 @EntityRepository()
 class UserRepository implements IUserRepositories{
@@ -14,21 +15,21 @@ class UserRepository implements IUserRepositories{
         this.repository = getRepository(User);
     }
 
-    async filterByEmail(email: string): Promise<User> {
+    async findByEmail(email: string): Promise<User> {
         return await this.repository.findOne({
               where: {
                 email: email
               }
         });
     }
-    async filterByName(name: string): Promise<User> {
+    async findByName(name: string): Promise<User> {
         return await this.repository.findOne({
               where: {
                 name: name
               }
         });
     }
-    async filterById(id: string): Promise<User> {
+    async findById(id: string): Promise<User> {
        return await this.repository.findOne({
             where: {
                 id: id
@@ -38,9 +39,9 @@ class UserRepository implements IUserRepositories{
     
     async getUser(name?: string, email?: string): Promise<IReturnGetUser> {
         let user: IReturnGetUser;
-        const userName = await this.filterByName(name);
-        const userEmail = await this.filterByEmail(email);
-        //const userId = await this.filterById(id);
+        const userName = await this.findByName(name);
+        const userEmail = await this.findByEmail(email);
+        //const userId = await this.findById(id);
         if(userName) {
             user = {
                 user: userName,
@@ -81,10 +82,10 @@ class UserRepository implements IUserRepositories{
         let userAlreadyExistsName = await this.getUser(name, null);
         let userAlreadyExistsEmail = await this.getUser(null,email);
         if(userAlreadyExistsEmail && method === "create") {
-            throw new Error(MESSAGE_ERROR.VALIDATE_USER_EMAIL);
+            throw new AppError(MESSAGE_ERROR.VALIDATE_USER_EMAIL);
         }
         if(userAlreadyExistsName && method === "create") {
-            throw new Error(MESSAGE_ERROR.VALIDATE_USER_NAME);
+            throw new AppError(MESSAGE_ERROR.VALIDATE_USER_NAME);
         }
     }
 }

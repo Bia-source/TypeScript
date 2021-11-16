@@ -6,6 +6,7 @@ import { ICategoriesRepository } from '../interfaces/ICategoriesRepository';
 import { container, inject, injectable } from "tsyringe";
 import { MESSAGE_ERROR } from '../../../shared/Error/messagesError';
 import { ValidateProps } from "../../../providers/validateProps";
+import { AppError } from '../../../shared/Error/AppError';
 
 interface IRequest {
     name: string;
@@ -28,7 +29,7 @@ class CategoryService {
     async execute({ name, description }: IRequest):Promise<Category> { 
      const categoryAlreadyExists = await this.categoriesRepository.findByName(name);
       if(categoryAlreadyExists){
-       throw new Error(MESSAGE_ERROR.VALIDATE_CATEGORY_EXISTS);
+       throw new AppError(MESSAGE_ERROR.VALIDATE_CATEGORY_EXISTS);
       } 
      const newCategory = await this.categoriesRepository.create({ name, description });
      return newCategory;
@@ -102,7 +103,7 @@ class CategoryService {
             const { name, description } = category;
             const categoryAlreadyExists = categoriesRepository.findByName(name);
             if (categoryAlreadyExists) {
-                throw new Error("Category already exist!");
+                throw new AppError("Category already exist!");
             }
             return categoriesRepository.create({ name, description });
         });

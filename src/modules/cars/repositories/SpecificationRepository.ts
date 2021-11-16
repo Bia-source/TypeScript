@@ -3,6 +3,7 @@ import { Specification } from "../entities/specification.model";
 import { EntityRepository, getRepository, Repository } from "typeorm";
 import { ValidateProps } from "../../../providers/validateProps";
 import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
+import { AppError } from "../../../shared/Error/AppError";
 
 @EntityRepository()
 class SpecificationRepository {
@@ -52,10 +53,10 @@ class SpecificationRepository {
         const validate = new ValidateProps();
         let specificationAlreadyExists = await validate.validateAlreadyExistsSpecification(data);
         if(method === 'create' && specificationAlreadyExists) {
-            throw new Error(`${messageError}`);
+            throw new AppError(`${messageError}`);
         }
         if(method === 'update' && !specificationAlreadyExists) {
-            throw new Error(`${messageError}`);
+            throw new AppError(`${messageError}`);
         }
     }
     

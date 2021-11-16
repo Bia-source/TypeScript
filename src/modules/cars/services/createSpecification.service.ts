@@ -3,6 +3,7 @@ import { Specification } from "../entities/specification.model";
 import { inject, injectable } from "tsyringe";
 import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 import { ValidateProps } from "../../../providers/validateProps";
+import { AppError } from "../../../shared/Error/AppError";
 
 
 interface IRequest {
@@ -22,7 +23,7 @@ class CreateSpecificationService {
      const specificationAlereadyExist = await this.specificationRepository.findByName(name);
      
      if(specificationAlereadyExist){
-        throw new Error(MESSAGE_ERROR.VALIDATE_SPECIFICATION_EXISTS);
+        throw new AppError(MESSAGE_ERROR.VALIDATE_SPECIFICATION_EXISTS);
      }
     const newSpecification = await this.specificationRepository.create({ name, description });
     return newSpecification;
@@ -47,7 +48,7 @@ class CreateSpecificationService {
         const validate = new ValidateProps();
         const specificationAlreadyExist = await validate.validateAlreadyExistsSpecification(name, id);
         if(!specificationAlreadyExist) {
-            throw new Error(MESSAGE_ERROR.VALIDATE_SPECIFICATION_NOT_FOUND); 
+            throw new AppError(MESSAGE_ERROR.VALIDATE_SPECIFICATION_NOT_FOUND); 
         }
         const specification = await this.specificationRepository.updateSpecification(name, description, id);
         return specification;
