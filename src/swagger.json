@@ -9,6 +9,69 @@
         }
     },
     "paths": {
+        "/authenticate/sessions": {
+            "post": {
+                "tags":["User"],
+                "summary": "Authentication in application",
+                "description": "Generate session token",
+                "requestBody": {
+                    "content":{
+                        "application/json": {
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password":{
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                           "authUser":{
+                                               "type": "object",
+                                               "properties":{
+                                                   "user": {
+                                                       "type": "object",
+                                                       "properties": {
+                                                           "id": {
+                                                               "type": "string"
+                                                           },
+                                                           "name": {
+                                                               "type": "string"
+                                                           },
+                                                           "email": {
+                                                               "type": "string"
+                                                           },
+                                                           "isAdmin": {
+                                                               "type": "boolean"
+                                                           }
+                                                       }
+                                                   },
+                                                   "token": {
+                                                       "type": "string"
+                                                   }
+                                               }
+                                           }  
+                                    }
+                                }
+                            }
+                        }    
+                    }
+                }
+            }
+        },
         "/categories": {
             "post": {
                 "tags": ["Category"],
