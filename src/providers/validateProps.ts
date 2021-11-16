@@ -1,10 +1,12 @@
-import { inject, injectable } from "tsyringe"
+
 import { Category } from "../modules/cars/entities/category.model"
 import { Specification } from "../modules/cars/entities/specification.model"
 import { ICategoriesRepository } from "../modules/cars/interfaces/ICategoriesRepository"
 import { ISpecificationRepository } from "../modules/cars/interfaces/ISpecificationRepository"
 import { IUserRepositories } from "../modules/accounts/interfaces/IUsersRepositories"
-
+import { IReturnGetUser } from "../modules/accounts/dtos/IReturnGetUserDTO"
+import { inject, injectable } from "tsyringe";
+@injectable()
 class ValidateProps{
     constructor(
         @inject("UserRepository")
@@ -16,10 +18,9 @@ class ValidateProps{
     ) { }
     
     // Revisar essa Validação, Não esta funcionando 
-    async validateAlreadyExistsUser(name?: string, email?: string): Promise<any> {
-        
-         await this.userRepository.getUser(name, null);
-         //await this.userRepository.getUser(null,email);
+    async validateAlreadyExistsUser(name?: string, email?: string): Promise<IReturnGetUser> {
+        const user = await this.userRepository.getUser(name, email);
+        return user;
     }
 
     async validateAlreadyExistsSpecification(name?: string, id?: string): Promise<Specification>{

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CategoryService } from '../services/category.service';
-import { container } from "tsyringe"
+import { container } from "tsyringe";
 class CategoryController{
    
     async handleCreateCategory(request: Request, response: Response): Promise<Response>{

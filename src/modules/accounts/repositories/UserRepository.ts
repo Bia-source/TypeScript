@@ -3,7 +3,6 @@ import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
 import { IReturnGetUser } from "../dtos/IReturnGetUserDTO";
 import { User } from "../entities/User";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
-import { ValidateProps } from "../../../providers/validateProps";
 import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 
 @EntityRepository()
@@ -13,36 +12,54 @@ class UserRepository implements IUserRepositories{
     constructor() {
         this.repository = getRepository(User);
     }
-    
-    async getUser(name?: string, email?: string): Promise<IReturnGetUser> {
-        let user: IReturnGetUser;
-        if(name != null) {
-           const userName = await this.repository.findOne({
+
+    async filterByEmail(email: string): Promise<User> {
+        return await this.repository.findOne({
+              where: {
+                email: email
+              }
+        });
+    }
+    async filterByName(name: string): Promise<User> {
+        return await this.repository.findOne({
               where: {
                 name: name
               }
-            });
-            if(userName) {
-              user = {
+        });
+    }
+    async filterById(id: string): Promise<User> {
+       return await this.repository.findOne({
+            where: {
+                id: id
+            }
+        });
+    }
+    
+    async getUser(name?: string, email?: string): Promise<IReturnGetUser> {
+        let user: IReturnGetUser;
+        const userName = await this.filterByName(name);
+        const userEmail = await this.filterByEmail(email);
+        //const userId = await this.filterById(id);
+        if(userName) {
+            user = {
                 user: userName,
                 type: "name"
-              };
-            }
-        } 
-        if(email != null) {
-            const userEmail = await this.repository.findOne({
-            where: {
-                email: email
-            }
-            });
-            if(userEmail) {
-              user = {
+            };
+        }
+
+        if(userEmail) {
+            user = {
                 user: userEmail,
                 type: "email"
-              };
-            }
+            };
         }
-        
+
+        // if(userId) {
+        //     user = {
+        //         user: userId,
+        //         type: "id"
+        //     };
+        // }
         return user;
     }
 
@@ -62,10 +79,10 @@ class UserRepository implements IUserRepositories{
     private async validateUser(method: string, name?: string, email?: string) {
         let userAlreadyExistsName = await this.getUser(name, null);
         let userAlreadyExistsEmail = await this.getUser(null,email);
-        if(userAlreadyExistsEmail) {
-            throw new Error(MESSAGE_ERROR.VALIDATE_USER_NAME);
+        if(userAlreadyExistsEmail && method === "create") {
+            throw new Error(MESSAGE_ERROR.VALIDATE_USER_EMAIL);
         }
-        if(userAlreadyExistsName) {
+        if(userAlreadyExistsName && method === "create") {
             throw new Error(MESSAGE_ERROR.VALIDATE_USER_NAME);
         }
     }
