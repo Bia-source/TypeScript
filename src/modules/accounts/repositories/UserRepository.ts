@@ -4,11 +4,8 @@ import { IReturnGetUser } from "../dtos/IReturnGetUserDTO";
 import { User } from "../entities/User";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
 import { ValidateProps } from "../../../providers/validateProps";
+import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 
-interface IParamsValidate{
-    name?: string;
-    email?: string;
-}
 @EntityRepository()
 class UserRepository implements IUserRepositories{
     private repository: Repository<User>
@@ -66,14 +63,12 @@ class UserRepository implements IUserRepositories{
         let userAlreadyExistsName = await this.getUser(name, null);
         let userAlreadyExistsEmail = await this.getUser(null,email);
         if(userAlreadyExistsEmail) {
-            throw new Error("Esse email de usuario já existe, tente outro!");
+            throw new Error(MESSAGE_ERROR.VALIDATE_USER_NAME);
         }
         if(userAlreadyExistsName) {
-            throw new Error("Esse nome de usuario já existe, tente outro!");
+            throw new Error(MESSAGE_ERROR.VALIDATE_USER_NAME);
         }
     }
-
-
 }
 
 export { UserRepository }

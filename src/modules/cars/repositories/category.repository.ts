@@ -2,6 +2,7 @@ import { Category } from "../entities/category.model";
 import { ICreateCategoryDTO } from "../interfaces/ICategoriesRepository";
 import { EntityRepository, getRepository, Repository } from "typeorm";
 import { ValidateProps } from "../../../providers/validateProps";
+import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 
 @EntityRepository()
 class CategoryRepositories {
@@ -12,7 +13,7 @@ class CategoryRepositories {
    }
 
     async create({ name, description }: ICreateCategoryDTO): Promise<Category>{
-      this.validateCategory("Já existe uma categoria com esse nome", name, "create");
+      this.validateCategory(MESSAGE_ERROR.VALIDATE_CATEGORY_EXISTS, name, "create");
       //primeiro parametro o objeto e o segundo o que quero colocar dentro dele
       const newCategory = await this.repository.create({
         name,
@@ -27,10 +28,10 @@ class CategoryRepositories {
      return listCategories;
    }
 
-   async findByName(name: string): Promise<Category>{
+    async findByName(name: string): Promise<Category>{ 
      const category = await this.repository.findOne({
            where: {
-              name
+              name: name
           }
       });
       return category;
@@ -39,7 +40,7 @@ class CategoryRepositories {
   async findById(id:string): Promise<Category>{
        const category = await this.repository.findOne({
            where: {
-               id
+               id: id
            }
        })
        return category;
@@ -50,7 +51,7 @@ class CategoryRepositories {
    }
     
     async updateCategory(name?: string, description?: string, id?:string): Promise<Category>{
-        this.validateCategory("Essa categoria não foi encontrada", name, "update");
+        this.validateCategory(MESSAGE_ERROR.VALIDATE_CATEGORY_NOT_FOUND, name, "update");
         const category = await this.repository.findOne({ id });
         let newCategory = {
             name: name || category.name,
@@ -61,9 +62,9 @@ class CategoryRepositories {
         return changeCategory;
     }
     
-    private validateCategory(messageError: string, data: string, method: string) {
+    private async validateCategory(messageError: string, data: string, method: string) {
         const validate = new ValidateProps();
-        let categoryAlreadyExists = validate.validateAlreadyExixtsCategory(data);
+        let categoryAlreadyExists = await validate.validateAlreadyExixtsCategory(data);
         if(method === 'create' && categoryAlreadyExists) {
             throw new Error(`${messageError}`);
         }

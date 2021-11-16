@@ -5,9 +5,14 @@ class CategoryController{
    
     async handleCreateCategory(request: Request, response: Response): Promise<Response>{
         const { name, description } = request.body;
-        const categoryService = container.resolve(CategoryService);
-        const category = await categoryService.execute({ name, description});
-        return response.status(201).json({category:category});
+        try {
+            const categoryService = container.resolve(CategoryService);
+            const category = await categoryService.execute({ name, description});
+            return response.status(201).json({category:category});
+        } catch (error) {
+            return response.json({ error: error.message });
+        }
+        
     }
 
     async handleListCategory(request: Request, response: Response): Promise<Response>{
@@ -41,9 +46,14 @@ class CategoryController{
 
     async handleUpdateCategory(request: Request, response: Response): Promise<Response>{
         const { name, description, id } = request.body;
-        const categoryService = container.resolve(CategoryService);
-        const categoryUpdate = await categoryService.updateCategory(name, description, id);
-        return response.status(200).json({ category: categoryUpdate });
+        try {
+            const categoryService = container.resolve(CategoryService);
+            const categoryUpdate = await categoryService.updateCategory(name, description, id);
+            return response.status(200).json({ category: categoryUpdate });
+        } catch (error) {
+            return response.json({ error: error.message });
+        }
+        
     }
 }
 

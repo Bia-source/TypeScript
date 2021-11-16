@@ -6,9 +6,14 @@ class SpecificationController{
    
    async handleCreateSpecification(request: Request, response: Response): Promise<Response> {
        const { name, description } = request.body;
-       const specificationService = container.resolve(CreateSpecificationService);
-       const specification = await specificationService.execute({name, description});
-       return response.status(201).json(specification);
+       try {
+           const specificationService = container.resolve(CreateSpecificationService);
+           const specification = await specificationService.execute({name, description});
+           return response.status(201).json(specification);
+       } catch (error) {
+           return response.json({ error: error.message });
+       }
+       
     }
 
    async filterByName(request: Request, response: Response): Promise<Response>{
@@ -33,9 +38,14 @@ class SpecificationController{
 
     async handleUpdateSpecification(request: Request, response: Response): Promise<Response> { 
         const { name, description, id } = request.body;
-        const specificationService = container.resolve(CreateSpecificationService);
-        const specificationUpdate = specificationService.updateSpecification(name, description, id);
-        return response.status(200).json(specificationUpdate);
+        try {
+            const specificationService = container.resolve(CreateSpecificationService);
+            const specificationUpdate = await specificationService.updateSpecification(name, description, id);
+            return response.status(200).json(specificationUpdate);
+        } catch (error) {
+            return response.json({ error: error.message });
+        }
+        
     }
 }
 

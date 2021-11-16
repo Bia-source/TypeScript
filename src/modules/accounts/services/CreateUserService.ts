@@ -3,7 +3,7 @@ import { ICreateUserDTO } from "../dtos/ICreateUserDTO";
 import { User } from "../entities/User";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
 import { hash } from "bcrypt";
-import { ValidateProps } from "../../../providers/validateProps";
+import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 @injectable()
 class CreateUserService{
 
@@ -12,14 +12,19 @@ class CreateUserService{
         private usersRepository: IUserRepositories
     ) { }
     async execute({ name, password, email, driver_license }: ICreateUserDTO): Promise<User> {
-        const passwordHash = await hash(password, 8);
-        const user = await this.usersRepository.create({
-            name,
-            password: passwordHash,
-            email,
-            driver_license
-        }); 
-        return user;
+        try {
+            const passwordHash = await hash(password, 8);
+            const user = await this.usersRepository.create({
+              name,
+              password: passwordHash,
+              email,
+              driver_license
+            }); 
+            return user;
+        } catch (error) {
+            throw new Error(MESSAGE_ERROR.CREATE_USER);
+        }
+        
     }
 }
 

@@ -1,6 +1,8 @@
 import { ISpecificationRepository } from "../interfaces/ISpecificationRepository";
 import { Specification } from "../entities/specification.model";
 import { inject, injectable } from "tsyringe";
+import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
+import { ValidateProps } from "../../../providers/validateProps";
 
 
 interface IRequest {
@@ -20,7 +22,7 @@ class CreateSpecificationService {
      const specificationAlereadyExist = await this.specificationRepository.findByName(name);
      
      if(specificationAlereadyExist){
-        throw new Error("Specification already exist!");
+        throw new Error(MESSAGE_ERROR.VALIDATE_SPECIFICATION_EXISTS);
      }
     const newSpecification = await this.specificationRepository.create({ name, description });
     return newSpecification;
@@ -42,9 +44,15 @@ class CreateSpecificationService {
    }
     
     async updateSpecification(name?: string, description?: string, id?: string): Promise<Specification>{
+        const validate = new ValidateProps();
+        const specificationAlreadyExist = await validate.validateAlreadyExistsSpecification(name, id);
+        if(!specificationAlreadyExist) {
+            throw new Error(MESSAGE_ERROR.VALIDATE_SPECIFICATION_NOT_FOUND); 
+        }
         const specification = await this.specificationRepository.updateSpecification(name, description, id);
         return specification;
-   }
+    }
+    
 }
 
 export { CreateSpecificationService };

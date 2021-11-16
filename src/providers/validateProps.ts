@@ -1,15 +1,10 @@
-import { inject } from "tsyringe"
+import { inject, injectable } from "tsyringe"
 import { Category } from "../modules/cars/entities/category.model"
 import { Specification } from "../modules/cars/entities/specification.model"
 import { ICategoriesRepository } from "../modules/cars/interfaces/ICategoriesRepository"
 import { ISpecificationRepository } from "../modules/cars/interfaces/ISpecificationRepository"
-import { User } from "../modules/accounts/entities/User"
 import { IUserRepositories } from "../modules/accounts/interfaces/IUsersRepositories"
 
-interface IReturnValidateUser{
-    user: User;
-    type: string;
-}
 class ValidateProps{
     constructor(
         @inject("UserRepository")
@@ -42,13 +37,14 @@ class ValidateProps{
     }
 
     async validateAlreadyExixtsCategory(name?: string, id?: string): Promise<Category>{
-        let category;
-        const idCategory = await this.categoryRepository.findById(id);
-        const nameCategory = await this.categoryRepository.findByName(name);
-        if(idCategory) {
+        let category: Category;
+        if(id) {
+            let idCategory = await this.categoryRepository.findById(id);
             category = idCategory;
         }
-        if(nameCategory) {
+        
+        if(name) {
+            let nameCategory = await this.categoryRepository.findByName(name);
             category = nameCategory;
         }
 

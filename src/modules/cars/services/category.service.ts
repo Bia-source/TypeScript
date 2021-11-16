@@ -3,7 +3,9 @@ import fs from "fs";
 import csvParse from "csv-parse";
 import { CategoryRepositories } from '../repositories/category.repository';
 import { ICategoriesRepository } from '../interfaces/ICategoriesRepository';
-import { inject, injectable } from "tsyringe";
+import { container, inject, injectable } from "tsyringe";
+import { MESSAGE_ERROR } from '../../../shared/Error/messagesError';
+import { ValidateProps } from "../../../providers/validateProps";
 
 interface IRequest {
     name: string;
@@ -24,31 +26,31 @@ class CategoryService {
    
   
     async execute({ name, description }: IRequest):Promise<Category> { 
-    const categoryAlreadyExists = await this.categoriesRepository.findByName(name);
-    if(categoryAlreadyExists){
-       throw new Error("Category already exist!");
-     }
-      const newCategory = await this.categoriesRepository.create({ name, description });
-      return newCategory;
-  }
+     const categoryAlreadyExists = await this.categoriesRepository.findByName(name);
+      if(categoryAlreadyExists){
+       throw new Error(MESSAGE_ERROR.VALIDATE_CATEGORY_EXISTS);
+      } 
+     const newCategory = await this.categoriesRepository.create({ name, description });
+     return newCategory;
+    }
 
     async findByName(name: string): Promise<Category>{
      const category = await this.categoriesRepository.findByName(name); 
-    return category;
-  }
+     return category;
+    }
 
     async list(): Promise<Category[]>{ 
      const category = await this.categoriesRepository.list();
-    return category;
-  }
+     return category;
+    }
 
     async findById(id: string): Promise<Category>{
      const category = await this.categoriesRepository.findById(id);
     return category;
- }
+    }
 
- //IMPORT CATEGORIES
- executeImport(file: Express.Multer.File):void{
+    //IMPORT CATEGORIES
+    executeImport(file: Express.Multer.File):void{
      // recebendo o arquivo, criando uma stream de leitura, passando 
      // o caminho(path) do arquivo para a pasta ./temp
      // pegando todos os dados que foram lidos e repassando por pipe
