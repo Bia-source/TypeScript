@@ -22,7 +22,26 @@ class ValidateProps{
     
 
     async validateAlreadyExistsUser(name?: string, email?: string): Promise<IReturnValidateUser> {
-      return await this.userRepository.getUser(name, email);
+        if(!name) {
+          return await this.userRepository.getUser(null,email);
+        } 
+        if(!email) {
+            return await this.userRepository.getUser(name,null);
+        }
+    }
+
+    async validateAlreadyExistsSpecification(name?: string, id?: string): Promise<Specification>{
+        let resultSpecification;
+        const specificationName = await this.specificationRepository.findByName(name);
+        const specificationId = await this.specificationRepository.findById(id);
+
+        if(specificationId) {
+            resultSpecification = specificationId;
+        }
+        if(specificationName) {
+            resultSpecification = specificationName;
+        }
+        return resultSpecification;
     }
 
     async validateAlreadyExixtsCategory(name?: string, id?: string): Promise<Category>{
@@ -38,11 +57,6 @@ class ValidateProps{
 
         return category;
     }
-
-    async validateAlreadyExistsSpecification(name: string): Promise<Specification>{
-        return await this.specificationRepository.findByName(name);
-    }
-
 
 }
 

@@ -1,17 +1,18 @@
 import { ICreateSpecificationDTO } from "../interfaces/ISpecificationRepository";
 import { Specification } from "../entities/specification.model";
 import { EntityRepository, getRepository, Repository } from "typeorm";
-
+import { ValidateProps } from "../../../providers/validateProps";
 
 @EntityRepository()
 class SpecificationRepository {
-     private repository: Repository<Specification>
+   private repository: Repository<Specification>
 
    public constructor(){
        this.repository = getRepository(Specification);
    }
     
     async create({ name, description }: ICreateSpecificationDTO): Promise<Specification> {
+        this.validateSpecification("Já existe uma categoria com esse nome", name);
         const createdSpecification = await this.repository.create({
             name,
             description
@@ -21,7 +22,7 @@ class SpecificationRepository {
     }
 
     async findByName(name: string): Promise<Specification> {
-        const specificationName = await this.repository.findOne({ name });
+       const specificationName = await this.repository.findOne({ name });
        return specificationName;
     }
 
@@ -35,6 +36,7 @@ class SpecificationRepository {
     }
     
     async updateSpecification(name?: string, description?: string, id?: string): Promise<Specification>{
+        this.validateSpecification("Essa especificação não foi encontrada", name);
         const specification = await this.repository.findOne({ id });
         let newSpecification = {
             name: name || specification.name,
@@ -43,8 +45,18 @@ class SpecificationRepository {
         await this.repository.update(id, newSpecification);
         const changeSpecification = this.repository.findOne({ id });
         return changeSpecification;
+    } 
+
+    private validateSpecification(messageError: string, data: string) {
+        const validate = new ValidateProps();
+        let specificationAlreadyExists = validate.validateAlreadyExistsSpecification(data);
+        if(!specificationAlreadyExists) {
+            throw new Error(`${messageError}`);
+        }
     }
     
 }
+
+
 
 export { SpecificationRepository };

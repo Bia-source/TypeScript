@@ -4,7 +4,7 @@ import { User } from "../entities/User";
 
 interface IUserRepositories{
     create(data: ICreateUserDTO): Promise<User>;
-    getUser(name: string, email: string): Promise<IReturnGetUser>;
+    getUser(name?: string, email?: string): Promise<IReturnGetUser>;
 }
 
 export { IUserRepositories }
