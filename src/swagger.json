@@ -72,6 +72,77 @@
                 }
             }
         },
+        "/user":{
+            "post": {
+                "tags": ["User"],
+                "summary": "Create a user",
+                "description": "Create a new user",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "name":{
+                                        "type":"string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "driver_license": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example":{
+                                     "name": "Maria Eduarda",
+                                     "password": "mred1232",
+                                     "email": "mred@yahoo.com",
+                                     "driver_license": "noautorizado"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201": {
+                        "description": "Created",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "user":{
+                                            "type":"object",
+                                            "properties":{
+                                                "id":{
+                                                    "type":"string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "driver_license": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Não foi possível criar um novo usuario, verifique as Informações."
+                    }
+                }
+            }    
+        },
+
         "/categories": {
             "post": {
                 "tags": ["Category"],
