@@ -4,6 +4,7 @@ import { IReturnGetUser } from "../dtos/IReturnGetUserDTO";
 import { User } from "../entities/User";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
 import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
+import { classToPlain } from "class-transformer";
 
 @EntityRepository()
 class UserRepository implements IUserRepositories{

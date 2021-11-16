@@ -3,18 +3,11 @@ import { inject, injectable } from "tsyringe";
 import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken"
+import { classToPlain } from "class-transformer";
 
 interface IRequest {
     email: string;
     password: string;
-}
-
-interface IResponse {
-    user: {
-        name: string;
-        email: string;
-    }
-    token: string;
 }
 
 @injectable()
@@ -25,7 +18,7 @@ interface IResponse {
         private userRepository: IUserRepositories) {  
     }
     
-    async execute({email, password}: IRequest): Promise<IResponse> {
+    async execute({email, password}: IRequest): Promise<Object> {
          const user = await this.userRepository.filterByEmail(email);
          if(!user) {
              throw new Error(MESSAGE_ERROR.AUTHENTICATE_USER);
@@ -41,8 +34,8 @@ interface IResponse {
             subject: user.id,
             expiresIn: "1d"
         });
-
-        return { user: user, token: token}    
+        
+        return { user: classToPlain(user), token: token}    
     }
 }
 
