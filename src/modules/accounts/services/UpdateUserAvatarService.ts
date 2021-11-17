@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { deleteFile } from "../../../providers/file";
 import { AppError } from "../../../shared/Error/AppError";
 import { MESSAGE_ERROR } from "../../../shared/Error/messagesError";
 import { IUserRepositories } from "../interfaces/IUsersRepositories";
@@ -20,6 +21,10 @@ class UpdateUserAvatarService {
         const user = await this.userRepository.findById(user_id);
         if(!user) {
            throw new AppError(`${MESSAGE_ERROR.USER_NOT_FOUND}`) 
+        }
+
+        if(user.avatar_url) {
+            await deleteFile(`./temp/avatar/${user.avatar_url}`);
         }
         Object.assign(user, {
             avatar_url: avatar_url_file,
