@@ -18,8 +18,11 @@ Este projeto tem como objetivo consolidar conhecimentos e boas práticas de prog
 <img height="24em" src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white">
 
 ## Como executar 🚀
+### Run 
 - yarn install
 - yarn dev
+### Testes 
+- yarn test
 
 ## Porta utilizada 🚪 
 http://localhost:1899/{router}
