@@ -65,7 +65,7 @@ class UserRepository implements IUserRepositories{
         return user;
     }
 
-    async create({ name, email, password, driver_license, method }: ICreateUserDTO): Promise<User> {
+    async create({ name, email, password, driver_license, id, avatar_url, method }: ICreateUserDTO): Promise<User> {
         if(method != 'upload') {
             await this.validateUser("create",name, null);    
             await this.validateUser("create", null, email);
@@ -74,7 +74,9 @@ class UserRepository implements IUserRepositories{
             name,
             email,
             password,
-            driver_license
+            driver_license,
+            avatar_url,
+            id,
         });
         const saveUser = await this.repository.save(user);
         return saveUser;
