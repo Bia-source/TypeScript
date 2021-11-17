@@ -7,6 +7,7 @@ export enum MESSAGE_ERROR{
     AUTHENTICATE_USER = "Email ou senha incorreto!",
     TOKEN_INVALID = "token.invalid",
     USER_NO_EXISTS = "Esse usuário não existe",
+    USER_NOT_FOUND = "Usuario não encontrado",
     // Erros de categorias 
     VALIDATE_CATEGORY_NOT_FOUND = "Essa categoria não foi encontrada",
     VALIDATE_CATEGORY_EXISTS = "Já existe uma categoria com esse nome",

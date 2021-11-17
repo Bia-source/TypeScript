@@ -25,7 +25,10 @@ class User{
     isAdmin: boolean;
 
     @Column()
-    created_at: Date
+    created_at: Date;
+
+    @Column()
+    avatar_url: string;     
 
     constructor() {
         if (!this.id) {
