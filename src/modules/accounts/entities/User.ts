@@ -22,13 +22,13 @@ class User{
     driver_license: string;
 
     @Column()
-    isAdmin: boolean;
+    isAdmin?: boolean;
 
     @Column()
     created_at: Date;
 
     @Column()
-    avatar_url: string;     
+    avatar_url?: string;     
 
     constructor() {
         if (!this.id) {

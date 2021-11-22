@@ -6,7 +6,7 @@ let createCategoryService: CategoryService;
 let categoriesRepositoryInMemory: CategoriesRepositoryInMemory;
     
 describe("Create a category", () => {
-
+    
     beforeEach(() => {
         categoriesRepositoryInMemory = new CategoriesRepositoryInMemory();
         createCategoryService = new CategoryService(categoriesRepositoryInMemory);
@@ -31,4 +31,4 @@ describe("Create a category", () => {
             await createCategoryService.execute(category);
         }).rejects.toBeInstanceOf(AppError);
     });
-})
+});
