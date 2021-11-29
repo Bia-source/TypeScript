@@ -8,6 +8,8 @@ import { router } from './routes/index';
 import "./database";
 import "./shared/container";
 import { AppError } from './shared/Error/AppError';
+import { server } from './config/graphqlData';
+
 
 const app = express();
 
@@ -32,6 +34,6 @@ app.use((err: Error, request: Request, response: Response, next: NextFunction) =
 
 app.use(router);
 
-
-
-app.listen(1899);
+app.listen(1899, () => {
+    server.listen().then(({ url }) => console.log(`Server started at ${url}`));
+});
