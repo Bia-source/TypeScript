@@ -1,27 +1,45 @@
 import { ApolloServer, gql } from "apollo-server";
+import e from "express";
+import { container } from "tsyringe";
+import { getUserByEmail } from "../modules/accounts/resolver/querys/getUserQuery";
+import { CreateUserService } from "../modules/accounts/services/CreateUserService";
+import { GetUserService } from "../modules/accounts/services/GetUsersService";
 
 const typeDefs = gql`
     type User {
-        _id: ID!
-        name: String
-        email: String
-        active: Boolean
+        id: String!
+        name: String!
+        email: String!
+        password: String!
+        driver_license: String!
+        isAdmin: Boolean
+        create_at: String
+        avatar_url: String
     }
  
     type Query{
         hello: String
-        users: [User]!
+        getUserByEmail(email: String): User!
+    }
+
+    type Mutation {
+       users(name: String!, email: String!, password: String!, driver_license: String!, avatar_url: String): User!
     }
 `;
 const resolvers = {
     Query: {
         hello: () => 'Hello World',
-        users: () => [{
-            _id: String(Math.random()),
-            name: 'Beatriz',
-            email: 'bfsantos@rd.com',
-            active: true
-        }]
+        getUserByEmail: async (_, args) => {
+            const { email } = args;
+            return getUserByEmail(email);
+        }
+    },
+    Mutation: {
+       users: (_,args) => {
+            const { name, email, password, driver_license, avatar_url } = args;
+            const createUserService = container.resolve(CreateUserService);
+            return createUserService.execute({ name, email, password, driver_license, avatar_url });
+        }
     }
 };
 
