@@ -1,9 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
-import e from "express";
-import { container } from "tsyringe";
 import { createUserMutation } from "../modules/accounts/resolver/mutations/createUserMutation";
 import { getUserByEmail } from "../modules/accounts/resolver/querys/getUserQuery";
-import { CreateUserService } from "../modules/accounts/services/CreateUserService";
 
 const typeDefs = gql`
     type User {
@@ -23,7 +20,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-       users(name: String!, email: String!, password: String!, driver_license: String!, avatar_url: String): User!
+       createUser(name: String!, email: String!, password: String!, driver_license: String!, avatar_url: String): User!
     }
 `;
 const resolvers = {
@@ -35,7 +32,7 @@ const resolvers = {
         }
     },
     Mutation: {
-       users: async (_,args)  => {
+       createUser: async (_,args) => {
             const { name, email, password, driver_license, avatar_url } = args;
             return await createUserMutation(name, email, password, driver_license, avatar_url);
         }
