@@ -1,5 +1,6 @@
 # TypeScript
 Conceitos avançados do typescript na criação de APIs
+Testando git pull
 
 ## Sobre o projeto
 Este projeto tem como objetivo consolidar conhecimentos e boas práticas de programação backend, voltadas para utilização de autenticação via token, utilização de informações salvas no storage da aplicação, clean code, conceitos TDD na criação dos teste unitários e de integração. 
